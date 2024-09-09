@@ -82,7 +82,6 @@ public class Main {
 
         // Title and Icon
         window.setTitle("Dice Project");
-        //window.setIconImage(Toolkit.getDefaultToolkit().getImage(IconImageDirectory + "Calculator_Icon.png"));
         // set visible
         window.setVisible(true);
 

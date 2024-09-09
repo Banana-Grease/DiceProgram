@@ -1,11 +1,13 @@
 package me.oscarcusick;
 
 import me.oscarcusick.Engine.Elements.VisualElements.TextBox;
+import me.oscarcusick.Engine.Math.RandomGenerator;
 import me.oscarcusick.Engine.Math.Vector2;
 import me.oscarcusick.Engine.Timing;
 import me.oscarcusick.Engine.UserInput.InteractionHandler;
 
 import javax.swing.*;
+import javax.swing.text.Highlighter;
 import java.awt.*;
 
 public class Canvas extends JComponent {
@@ -14,7 +16,14 @@ public class Canvas extends JComponent {
     int[] ScreenDimensions = new int[2]; // to store size of window when initializing and for calculations
 
     InteractionHandler IH;
-    Timing Time;
+    Timing Time = new Timing(60);
+
+    RandomGenerator Rand = new RandomGenerator();
+
+    String DrawContent = "Standard Dice Roll Result: " + Rand.RollAStandardDice();
+
+    // Sketch way to draw a new number every x seconds
+    double NanoSinceLastRandDraw = 0;
 
     // constructor
     public Canvas(int WindowSizeX, int WindowSizeY, InteractionHandler IH) {
@@ -22,8 +31,6 @@ public class Canvas extends JComponent {
         ScreenDimensions[ScreenY] = WindowSizeY;
 
         this.IH = IH;
-        this.Time = new Timing(60);
-
     }
 
     public void paint(Graphics g) { // main paint loop
@@ -34,6 +41,8 @@ public class Canvas extends JComponent {
         Time.Update();
 
         // --- Start Render Cycle
+
+
 
         // Draw Background
 
@@ -46,6 +55,21 @@ public class Canvas extends JComponent {
         FPSCounter.SetDrawCenteringType(TextBox.CenteringTypes.Center);
         FPSCounter.SetDrawBoundingBox(true);
         FPSCounter.Draw();
+
+        TextBox RandomNumber = new TextBox(g2, new Vector2<>(50, 50), new Vector2<>(500, 40));
+        RandomNumber.SetDrawCenteringType(TextBox.CenteringTypes.Center);
+        RandomNumber.SetDrawBoundingBox(true);
+
+        if ( (Time.ConvertNanoSeconds(System.nanoTime(), Timing.TimeUnits.S) - Time.ConvertNanoSeconds(NanoSinceLastRandDraw, Timing.TimeUnits.S)) > .5f ) {
+            DrawContent = "Standard Dice Roll Result: " + Rand.RollAStandardDice();
+            RandomNumber.SetTextContent(DrawContent);
+            NanoSinceLastRandDraw = System.nanoTime();
+        } else {
+            RandomNumber.SetTextContent(DrawContent);
+        }
+
+        g2.setColor(Color.black);
+        RandomNumber.Draw();
 
         // done with this draw cycle
         repaint(); // re-draw

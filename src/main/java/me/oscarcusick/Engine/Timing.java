@@ -51,7 +51,7 @@ public class Timing {
      * @param PreferredUnit Time Unit To Be Converted To
      * @return Returns The New Time Unit
      */
-    double ConvertNanoSeconds(double NanoSeconds, TimeUnits PreferredUnit) {
+    public double ConvertNanoSeconds(double NanoSeconds, TimeUnits PreferredUnit) {
         return switch (PreferredUnit.ordinal()) {
             case 0 -> NanoSeconds; // nanoseconds
             case 1-> NanoSeconds / 1000; // microseconds

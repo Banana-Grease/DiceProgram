@@ -154,6 +154,10 @@ public class TextBox extends TextElement {
         }
     }
 
+    /**
+     * MUST BE CALLED BEFORE EVERY DRAW CALL OTHER-WISE NOTHING WILL BE DRAWN FOR WHATEVER REASON, THIS IS DEFINATLEY A SAFETY FEATURE NOT A 'BUG' WHATEVER THAT IS
+     * @param NewText
+     */
     public void SetTextContent(String NewText) {
         super.Text = NewText;
     }
